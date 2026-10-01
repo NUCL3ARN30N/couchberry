@@ -1,0 +1,4 @@
+[Desktop Entry]
+Type=Application
+Name=Steam Link Kiosk
+Exec=/usr/local/bin/steamlink-kiosk

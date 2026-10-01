@@ -1,0 +1,13 @@
+#!/bin/sh
+# Session launcher: starts a bare labwc compositor (no panel, no desktop)
+# whose only job is to run Steam Link. Installed to /usr/local/bin.
+. /usr/bin/setup_env
+
+if raspi-config nonint is_pi ; then
+    export WLR_DRM_FORCE_LIBLIFTOFF=1
+    if ! raspi-config nonint gpu_has_mmu ; then
+        export WLR_RENDERER=pixman
+    fi
+fi
+
+exec /usr/bin/labwc -C "$HOME/.config/labwc-kiosk" -S /usr/local/bin/steamlink-kiosk-run

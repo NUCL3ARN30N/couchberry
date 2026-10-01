@@ -1,0 +1,29 @@
+#!/bin/sh
+# Runs inside the kiosk session: fixes the audio output, then keeps Steam Link
+# running (it is restarted 3 seconds after it exits or crashes).
+
+# On Raspberry Pi OS the default audio sink can end up being the 3.5mm jack
+# instead of HDMI. Wait for PipeWire (up to 30 s), then make HDMI the default
+# output, unmute it and set it to 100% (use the TV's volume instead).
+set_hdmi_default() {
+    i=0
+    while [ "$i" -lt 30 ]; do
+        id=$(wpctl status 2>/dev/null | sed -n '/Sinks:/,/Sources:/p' \
+            | grep -i 'HDMI' | grep -oE '[0-9]+\.' | head -n1 | tr -d '.')
+        if [ -n "$id" ]; then
+            wpctl set-default "$id"
+            wpctl set-mute "$id" 0
+            wpctl set-volume "$id" 1.0
+            return 0
+        fi
+        i=$((i + 1))
+        sleep 1
+    done
+    return 1
+}
+set_hdmi_default
+
+while true; do
+    echo "" | /usr/bin/steamlink
+    sleep 3
+done
