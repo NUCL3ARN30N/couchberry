@@ -1,4 +1,4 @@
-# pi-steamlink-kiosk
+# couchberry
 
 Turn a Raspberry Pi 4B into a dedicated **Steam Link box**: power it on and it boots straight into Steam Link. The desktop is never shown, sound plays over HDMI, and Steam Link restarts itself if it ever exits.
 
